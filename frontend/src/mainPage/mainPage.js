@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { socket } from "../connections/socket";
+import LaunchGame from "../gameLogic/launchGame";
 
-export default function Onboard() {
+export default function MainPage() {
   const [gotTheRoomName, setGotTheRoomName] = useState(false);
   const [roomName, setRoomName] = useState("");
   const [gotUnknownCode, setGotUnknownCode] = useState(false);
@@ -51,7 +52,7 @@ export default function Onboard() {
   return (
     <div>
       {bothJoined ? (
-        <h1>It Worked, Both Joined</h1>
+        <LaunchGame/>
       ) : gotTheRoomName ? (
         <div id="gameScreen" className="h-100">
           <div className="d-flex flex-column align-items-center justify-content-center h-100">

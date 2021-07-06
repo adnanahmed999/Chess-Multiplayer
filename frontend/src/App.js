@@ -1,5 +1,5 @@
 import React from 'react';
-import Onboard from './onboard/onboard';
+import MainPage from './mainPage/mainPage';
 import {BrowserRouter as Router , Redirect, Switch, Route} from 'react-router-dom'
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
     <Router>
       <Switch>
         <Route path="/" exact>
-          <Onboard />
+          <MainPage/>
         </Route>
       </Switch>
     </Router>

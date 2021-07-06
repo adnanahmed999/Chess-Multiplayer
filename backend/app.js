@@ -14,6 +14,7 @@ io.on("connection", (client)=> {
 
     client.on('newGame', handleNewGame)
     client.on('joinGame', handleJoinGame)
+    client.on('validMove', handleValidMove)
 
     function handleNewGame() {
         let roomName = uuidv4();
@@ -21,31 +22,21 @@ io.on("connection", (client)=> {
         client.emit('gameCode', roomName)
         client.join(roomName)
         client.number = 1;
-        client.emit('init', 1)
+        client.emit('init', {playerNumber: 1, roomName})
     }
 
     function handleJoinGame(roomName) {
         console.log("in coming room name:", roomName)
         const room = io.sockets.adapter.rooms.has(roomName)
+        // checks if the room exists and returns either true or false.
         console.log("allROoms", io.sockets.adapter.rooms)
         let allUsers;
         let numClients = 0;
         if (room===true) {
-        //   console.log("inside")
-        //   console.log("roomsoc",room.sockets)
-        //   allUsers = room.sockets;
-            numClients = io.sockets.adapter.rooms.get(roomName).size
+            numClients = io.sockets.adapter.rooms.get(roomName).size 
             console.log(numClients)
         }
 
-        // console.log("room", room)
-        // let numClients = 0;
-
-        // if (allUsers) {
-        //   numClients = Object.keys(allUsers).length;
-        // }
-        // console.log(allUsers)
-        // console.log("numC", numClients)
         if (numClients === 0) {
           client.emit('unknownCode');
           return;
@@ -58,8 +49,12 @@ io.on("connection", (client)=> {
     
         client.join(roomName);
         client.number = 2;
-        client.emit('init', 2);
+        client.emit('init', {playerNumber: 2, roomName} );
         io.sockets.in(roomName).emit('bothJoined')
+    }
+
+    function handleValidMove(positionObject) {
+        io.sockets.in(positionObject.roomName).emit('movePieces',positionObject)
     }
 })
 
