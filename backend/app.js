@@ -12,9 +12,13 @@ const clientRooms = {}
 
 io.on("connection", (client)=> {
 
+    console.log("id", client.id)
     client.on('newGame', handleNewGame)
     client.on('joinGame', handleJoinGame)
     client.on('validMove', handleValidMove)
+    client.on('callUser', handleCallUser)
+    client.on('acceptCall', handleAcceptCall)
+    client.on('sendOtherPlayerClientID', handleSendClientID)
 
     function handleNewGame() {
         let roomName = uuidv4();
@@ -22,19 +26,19 @@ io.on("connection", (client)=> {
         client.emit('gameCode', roomName)
         client.join(roomName)
         client.number = 1;
-        client.emit('init', {playerNumber: 1, roomName})
+        client.emit('init', {playerNumber: 1, clientID: client.id,  roomName})
     }
 
     function handleJoinGame(roomName) {
-        console.log("in coming room name:", roomName)
+        // console.log("in coming room name:", roomName)
         const room = io.sockets.adapter.rooms.has(roomName)
         // checks if the room exists and returns either true or false.
-        console.log("allROoms", io.sockets.adapter.rooms)
+        // console.log("allROoms", io.sockets.adapter.rooms)
         let allUsers;
         let numClients = 0;
         if (room===true) {
             numClients = io.sockets.adapter.rooms.get(roomName).size 
-            console.log(numClients)
+            // console.log(numClients)
         }
 
         if (numClients === 0) {
@@ -49,13 +53,27 @@ io.on("connection", (client)=> {
     
         client.join(roomName);
         client.number = 2;
-        client.emit('init', {playerNumber: 2, roomName} );
+        client.emit('init', {playerNumber: 2, clientID: client.id, roomName} );
         io.sockets.in(roomName).emit('bothJoined')
     }
 
     function handleValidMove(positionObject) {
         io.sockets.in(positionObject.roomName).emit('movePieces',positionObject)
     }
+
+    function handleSendClientID(roomName) {
+        // console.log("rn", roomName)
+        client.broadcast.emit('otherPlayerClientID',client.id)
+    }
+
+    function handleCallUser(data) {
+        io.to(data.userToCall).emit('hey', {signal: data.signalData, from: data.from});
+    }
+
+    function handleAcceptCall(data) {
+        io.to(data.to).emit('callAccepted', data.signal);
+    }
+
 })
 
 server.listen(port, ()=> {

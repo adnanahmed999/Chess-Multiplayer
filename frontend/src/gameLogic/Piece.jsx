@@ -11,7 +11,7 @@ export default function Piece({ piece: { type, color }, position }) {
       return { isDragging: !!monitor.isDragging() };
     },
   });
-  console.log("tc", type, color)
+  // console.log("tc", type, color)
   const pieceImg = "/assets/"+type+"_"+color+".png";
   return (
     <>

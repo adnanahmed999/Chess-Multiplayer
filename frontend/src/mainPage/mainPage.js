@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { socket } from "../connections/socket";
+import { socket, roomName } from "../connections/socket";
 import LaunchGame from "../gameLogic/launchGame";
+import VideoCall from "../connections/videoCall";
 
 export default function MainPage() {
   const [gotTheRoomName, setGotTheRoomName] = useState(false);
@@ -37,9 +38,12 @@ export default function MainPage() {
     setHandleTooManyPlayers(true);
   }
 
-  function handleBothJoined() {
-    console.log("both joined");
+  function handleBothJoined() {    
     setBothJoined(true);
+  }
+
+  if(bothJoined) {
+    socket.emit("sendOtherPlayerClientID", roomName)
   }
 
   useEffect(() => {
@@ -52,7 +56,10 @@ export default function MainPage() {
   return (
     <div>
       {bothJoined ? (
-        <LaunchGame/>
+        <>
+          <LaunchGame/>
+          <VideoCall />
+        </>
       ) : gotTheRoomName ? (
         <div id="gameScreen" className="h-100">
           <div className="d-flex flex-column align-items-center justify-content-center h-100">
