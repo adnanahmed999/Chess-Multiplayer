@@ -21,18 +21,19 @@ function CoreGame() {
   }, [])
   return (
     <div className="container">
-      {isGameOver && (
-        <h2 className="vertical-text">
-          GAME OVER
-          <button onClick={resetGame}>
-            <span className="vertical-text"> NEW GAME</span>
-          </button>
-        </h2>
-      )}
+      <div>
+        {isGameOver && (
+          <h2 className="text">
+            GAME OVER
+          </h2>
+        )}
+      </div>
       <div className="board-container">
         <Board board={board} turn={turn} />
       </div>
-      {result && <p className="vertical-text">{result}</p>}
+      <div>
+        {result && <p className="text">{result}</p>}
+      </div>
     </div>
   )
 }

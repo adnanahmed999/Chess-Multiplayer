@@ -56,10 +56,10 @@ export default function MainPage() {
   return (
     <div>
       {bothJoined ? (
-        <>
-          <LaunchGame/>
-          <VideoCall />
-        </>
+        <div className="mainDiv">
+          <LaunchGame className="mainDiv-Child"/>
+          <VideoCall className="mainDiv-Child"/>
+        </div>
       ) : gotTheRoomName ? (
         <div id="gameScreen" className="h-100">
           <div className="d-flex flex-column align-items-center justify-content-center h-100">
@@ -69,9 +69,9 @@ export default function MainPage() {
           </div>
         </div>
       ) : gotUnknownCode ? (
-        <h1>Unknown COde</h1>
+        <h1>Please Enter Correct Code.</h1>
       ) : gotTooManyPlayers ? (
-        <h1>Too many</h1>
+        <h1>Two Players are already playing the Game.</h1>
       ) : (
         <section className="vh-100">
           <div className="container h-100">

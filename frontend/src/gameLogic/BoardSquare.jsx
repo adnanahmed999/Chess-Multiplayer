@@ -5,6 +5,9 @@ import { useDrop } from 'react-dnd'
 import { handleMove } from './Game'
 import { gameSubject } from './Game'
 import { socket, playerNumber, roomName } from '../connections/socket'
+import useSound from 'use-sound'
+import moveAudio from '../sound/moveAudio.mp3'
+
 // -------------------------------------------------------------
 // -------------------------------------------------------------
 // -------------------------------------------------------------
@@ -20,12 +23,14 @@ export default function BoardSquare({piece,black,position,turn}) {
   // --------------------------------------------------------------
   // --------------------------------------------------------------
   // --------------------------------------------------------------
+  const [play] = useSound(moveAudio)
   const [, drop] = useDrop({
     accept: 'piece',
     drop: (item) => {
       const pieceDetailArray = item.id.split('_')
       if( (playerNumber===1 && turn === 'w') || (playerNumber===2 && turn === 'b')) {
         // handleMove(pieceDetailArray[0], position)
+        play()
         socket.emit('validMove', {from: pieceDetailArray[0],to: position, roomName})
       }
     },

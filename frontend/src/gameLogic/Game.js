@@ -1,10 +1,11 @@
 import * as Chess from 'chess.js'
 import { BehaviorSubject } from 'rxjs'
-import { useEffect } from 'react'
 
 
 const chess = new Chess()
 // instance of standard chess library
+
+
 
 export const gameSubject = new BehaviorSubject()
 
@@ -56,6 +57,7 @@ export function move(from, to, promotion) {
     const legalMove = chess.move(tempMove)
 
     if (legalMove) {
+
         updateGame()
     }
 }

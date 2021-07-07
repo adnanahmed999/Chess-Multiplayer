@@ -76,14 +76,14 @@ function VideoCall() {
   let UserVideo;
   if (stream) {
     UserVideo = (
-      <video className="videoPlayer" playsInline muted ref={userVideo} autoPlay />
+      <video className="videoPlayer own-Video" playsInline muted ref={userVideo} autoPlay />
     );
   }
 
   let PartnerVideo;
   if (callAccepted) {
     PartnerVideo = (
-      <video className="videoPlayer" playsInline ref={partnerVideo} autoPlay />
+      <video className="videoPlayer partner-Video" playsInline ref={partnerVideo} autoPlay />
     );
   }
 
@@ -93,23 +93,23 @@ function VideoCall() {
 
   if (receivingCall) {
     incomingCall = (
-      <div>
+      <div className="make-center">
         <h1>{PLAYERNUMBER} is calling you</h1>
-        <button onClick={acceptCall}>Accept</button>
+        <button className="btn btn-success" onClick={acceptCall}>Accept</button>
       </div>
     )
   }
   return (
     <div>
       <div className="styleVideoFrames">
-          <div>
+          <div className="video-Div partner">
+            {PartnerVideo} 
+          </div>
+          <div className="video-Div user">
             {UserVideo}
           </div>
-          <div>
-            {PartnerVideo}
-          </div>
-          <div>
-            {callAccepted==false && <button onClick={() => callPeer(otherPlayerID)}>Call Opponent</button>}
+          <div className="make-center">
+            {callAccepted==false && <button className="btn btn-success" onClick={() => callPeer(otherPlayerID)}>Call Opponent</button>}
           </div>
           <div>
             {callAccepted==false &&incomingCall}
