@@ -109,7 +109,7 @@ function VideoCall() {
             {UserVideo}
           </div>
           <div className="make-center">
-            {callAccepted==false && <button className="btn btn-success" onClick={() => callPeer(otherPlayerID)}>Call Opponent</button>}
+            {callAccepted==false && <button className="btn btn-success mt-5" onClick={() => callPeer(otherPlayerID)}>Call Opponent</button>}
           </div>
           <div>
             {callAccepted==false &&incomingCall}

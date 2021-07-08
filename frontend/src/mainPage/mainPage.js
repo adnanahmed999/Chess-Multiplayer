@@ -9,6 +9,7 @@ export default function MainPage() {
   const [gotUnknownCode, setGotUnknownCode] = useState(false);
   const [gotTooManyPlayers, setHandleTooManyPlayers] = useState(false);
   const [bothJoined, setBothJoined] = useState(false);
+  const [opponentDisconnected, setOpponentDisconnected] = useState(false);
 
   const [typingRoomName, setTypingRoomName] = useState("");
 
@@ -38,12 +39,16 @@ export default function MainPage() {
     setHandleTooManyPlayers(true);
   }
 
-  function handleBothJoined() {    
+  function handleOpponentDisconnected() {
+    setOpponentDisconnected(true);
+  }
+
+  function handleBothJoined() {
     setBothJoined(true);
   }
 
-  if(bothJoined) {
-    socket.emit("sendOtherPlayerClientID", roomName)
+  if (bothJoined) {
+    socket.emit("sendOtherPlayerClientID", roomName);
   }
 
   useEffect(() => {
@@ -51,14 +56,17 @@ export default function MainPage() {
     socket.on("unknownCode", handleUnknownCode);
     socket.on("tooManyPlayers", handleTooManyPlayers);
     socket.on("bothJoined", handleBothJoined);
+    socket.on("opponentDisconnected", handleOpponentDisconnected);
   }, []);
 
   return (
     <div>
-      {bothJoined ? (
+      {opponentDisconnected ? (
+        <h1>Opponent Disconnected</h1>
+      ) : bothJoined ? (
         <div className="mainDiv">
-          <LaunchGame className="mainDiv-Child"/>
-          <VideoCall className="mainDiv-Child"/>
+          <VideoCall className="mainDiv-Child" />
+          <LaunchGame className="mainDiv-Child" />
         </div>
       ) : gotTheRoomName ? (
         <div id="gameScreen" className="h-100">
@@ -77,7 +85,16 @@ export default function MainPage() {
           <div className="container h-100">
             <div id="initialScreen" className="h-100">
               <div className="d-flex flex-column align-items-center justify-content-center h-100">
-                <h1>Multiplayer Chess</h1>
+                <u>
+                  <h1>
+                    Made by Adnan Ahmed. Connect me on{" "}
+                    <a href="https://www.linkedin.com/in/adnan-ahmed99/">
+                      LinkedIn
+                    </a>
+                  </h1>
+                </u>
+                <br />
+                <h2>Chess Talks</h2>
                 <button
                   type="submit"
                   className="btn btn-success"

@@ -10,22 +10,17 @@ const chess = new Chess()
 export const gameSubject = new BehaviorSubject()
 
 export function initGame() {
-    // const savedGame = localStorage.getItem('savedGame')
-    // const savedGame = null
-    // if (savedGame) {
-    //     chess.load(savedGame)
-    // }
     updateGame()
 }
 
-export function resetGame() {
+export function resetGame(whoReset) {
+    alert(`${whoReset} reset the Game.`)
     chess.reset()
     updateGame()
 }
 
 export function handleMove(from, to) {
     console.log(chess.board())
-    // --------------------------------------------------------------------
     const promotions = chess.moves({ verbose: true }).filter(m => m.promotion) // checking all possible moves, verbose true means we are converting it to array
     console.table(promotions)
     if (promotions.some(p => `${p.from}:${p.to}` === `${from}:${to}`)) {
@@ -33,7 +28,6 @@ export function handleMove(from, to) {
         updateGame(pendingPromotion)
     }
     const { pendingPromotion } = gameSubject.getValue()
-    // --------------------------------------------------------------------
     if (!pendingPromotion) {
         move(from, to)
     }
@@ -46,14 +40,9 @@ export function move(from, to, promotion) {
 
     let tempMove = { from, to }
 
-    // -------------------------------------------
     if (promotion) {
         tempMove.promotion = promotion
     }
-    // --------------------------------------------
-
-    // for initial setup, check screenshot.
-
     const legalMove = chess.move(tempMove)
 
     if (legalMove) {
@@ -71,18 +60,11 @@ function updateGame(pendingPromotion) {
 
     const newGame = {
         board: chess.board(),
-        // Returns an 2D array representation of the current position. Empty squares are represented by null.
-        // -------------------------------------------------------------
-        // -------------------------------------------------------------
         pendingPromotion,
-        // -------------------------------------------------------------
-        // -------------------------------------------------------------
         isGameOver,
         turn: chess.turn(),
         result: isGameOver ? getGameResult() : null
     }
-
-    // localStorage.setItem('savedGame', chess.fen())
 
     gameSubject.next(newGame)
 }

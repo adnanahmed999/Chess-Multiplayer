@@ -18,7 +18,9 @@ io.on("connection", (client)=> {
     client.on('validMove', handleValidMove)
     client.on('callUser', handleCallUser)
     client.on('acceptCall', handleAcceptCall)
+    client.on('reStartNewGame', handleReStartNewGame)
     client.on('sendOtherPlayerClientID', handleSendClientID)
+    client.on('disconnect', handleDisconnect)
 
     function handleNewGame() {
         let roomName = uuidv4();
@@ -72,6 +74,17 @@ io.on("connection", (client)=> {
 
     function handleAcceptCall(data) {
         io.to(data.to).emit('callAccepted', data.signal);
+    }
+
+    function  handleReStartNewGame(detailsObject) {
+        io.sockets.in(detailsObject.roomName).emit('resetGame', detailsObject.playerNumber)
+    }
+
+    function handleDisconnect() {
+        console.log(client.id, "disconnected")
+        const roomName = clientRooms[client.id]
+        delete clientRooms[client.id]
+        io.sockets.in(roomName).emit('opponentDisconnected')
     }
 
 })
