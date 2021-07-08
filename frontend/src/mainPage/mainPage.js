@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { socket } from "../connections/socket";
 import LaunchGame from "../gameLogic/launchGame";
 import VideoCall from "../connections/videoCall";
+import { useHistory } from 'react-router'
 
 export default function MainPage() {
   const [gotTheRoomName, setGotTheRoomName] = useState(false);
@@ -10,8 +11,13 @@ export default function MainPage() {
   const [gotTooManyPlayers, setHandleTooManyPlayers] = useState(false);
   const [bothJoined, setBothJoined] = useState(false);
   const [opponentDisconnected, setOpponentDisconnected] = useState(false);
-
   const [typingRoomName, setTypingRoomName] = useState("");
+
+  const history = useHistory()
+
+  function reload() {
+    history.go(0)
+  }
 
   function createGameHandler() {
     socket.emit("newGame");
@@ -64,6 +70,7 @@ export default function MainPage() {
       {opponentDisconnected ? (
         <div>
           <h1>Opponent Disconnected</h1>
+          <button className="btn btn-success" onClick={reload}> Main Page </button>
         </div>
       ) : bothJoined ? (
         <div className="mainDiv">
@@ -76,12 +83,19 @@ export default function MainPage() {
             <h1>
               Your game code is: <span id="gameCodeDisplay">{roomName}</span>
             </h1>
+            <button className="btn btn-success" onClick={reload}> Main Page </button>
           </div>
         </div>
       ) : gotUnknownCode ? (
-        <h1>Please Enter Correct Code.</h1>
+        <div>
+          <h1>Please Enter Correct Code.</h1>
+          <button className="btn btn-success" onClick={reload}> Main Page </button>
+        </div>
       ) : gotTooManyPlayers ? (
-        <h1>Two Players are already playing the Game.</h1>
+        <div>
+          <h1>Two players have joined the Game.</h1>
+          <button className="btn btn-success" onClick={reload}> Main Page </button>
+        </div>
       ) : (
         <section className="vh-100">
           <div className="container h-100">

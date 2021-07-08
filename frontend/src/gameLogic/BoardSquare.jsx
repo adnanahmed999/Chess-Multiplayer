@@ -9,9 +9,6 @@ import useSound from 'use-sound'
 import moveAudio from '../sound/moveAudio.mp3'
 import Promote from './Promote'
 
-const covertAlpha = {"a":"h", "b":"g", "c":"f", "d":"e", "e":"d", "f":"c", "g":"b", "h":"a"}
-const convertNum = {"0":"7", "1":"6", "2":"5", "3":"4", "4":"3", "5":"4", "6":"1", "7":"0"}
-
 export default function BoardSquare({piece,black,position,turn}) {
   const [promotion, setPromotion] = useState(null)
   const [play] = useSound(moveAudio)
@@ -28,33 +25,6 @@ export default function BoardSquare({piece,black,position,turn}) {
     },
   })
 
-
-  // useEffect(() => {
-  //   const subscribe = gameSubject.subscribe(
-  //     ({ pendingPromotion }) => {
-  //       if(pendingPromotion) {
-  //         if( (playerNumber===1 && turn === 'w') || (playerNumber===2 && turn === 'b')) {
-  //             if(pendingPromotion.to === position) {
-  //               console.log("pos",position)
-  //               setPromotion(pendingPromotion)
-  //             } else {
-  //               setPromotion(null)
-  //           }
-  //         } else {
-  //           let newPosition = covertAlpha[position[0]]+convertNum[position[1]]
-            
-  //           if(pendingPromotion.to === newPosition) {
-  //             // console.log("newpos",newPosition)
-  //             console.log("newpos",newPosition)
-  //             setPromotion(pendingPromotion)
-  //           } else {
-  //             setPromotion(null)
-  //           }            
-  //         }
-  //       }
-  //     }
-  // return () => subscribe.unsubscribe()
-// }, [position])
   useEffect(() => {
     const subscribe = gameSubject.subscribe(
       ({ pendingPromotion }) =>

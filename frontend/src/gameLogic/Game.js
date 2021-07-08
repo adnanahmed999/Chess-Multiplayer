@@ -37,17 +37,12 @@ export function handleMove(from, to) {
 
 export function move(from, to, promotion) {
     // promotion parameter is extra if you want to avoid promotion
-
-
     let tempMove = { from, to }
-
     if (promotion) {
         tempMove.promotion = promotion
     }
     const legalMove = chess.move(tempMove)
-
     if (legalMove) {
-
         updateGame()
     }
 }
@@ -58,9 +53,6 @@ export function handleMovePieces(positionObject) {
 
 function updateGame(pendingPromotion) {
     const isGameOver = chess.game_over()
-    // if(chess.in_check()) {
-    //     socket.emit('checked')
-    // }
 
     const newGame = {
         board: chess.board(),
@@ -68,7 +60,7 @@ function updateGame(pendingPromotion) {
         isGameOver,
         turn: chess.turn(),
         result: isGameOver ? getGameResult() : null,
-        // isCheck: chess.in_check()
+        isChecked: chess.in_check()
     }
 
     gameSubject.next(newGame)

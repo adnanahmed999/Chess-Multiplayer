@@ -24,6 +24,7 @@ io.on("connection", (client)=> {
     client.on('disconnect', handleDisconnect)
     client.on('promoteMove', handlePromoteMove);
 
+
     function handleNewGame() {
         let roomName = uuidv4();
         clientRooms[client.id] = roomName;

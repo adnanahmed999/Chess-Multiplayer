@@ -10,7 +10,7 @@ function CoreGame() {
   const [isGameOver, setIsGameOver] = useState()
   const [result, setResult] = useState()
   const [turn, setTurn] = useState()
-  // const [userChecked, setUserChecked] = useState()
+  const [userChecked, setUserChecked] = useState(false)
  
   
   useEffect(() => {
@@ -20,6 +20,7 @@ function CoreGame() {
       setIsGameOver(game.isGameOver)
       setResult(game.result)
       setTurn(game.turn)
+      setUserChecked(game.isChecked)
     })
     return () => subscribe.unsubscribe()
   }, [])
@@ -32,6 +33,8 @@ function CoreGame() {
     socket.emit('reStartNewGame', {roomName, playerNumber })
   }
 
+
+
   return (
     <div className="container">
       <div>
@@ -42,6 +45,7 @@ function CoreGame() {
         )}
         <div>
           <button className="btn btn-success mb-4" onClick={handleReset}>Reset Game</button>
+          {userChecked && <h1>Check!!!</h1>}
         </div>
       </div>
       <div className="board-container">
