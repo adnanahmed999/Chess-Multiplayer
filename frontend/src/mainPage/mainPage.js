@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { socket, roomName } from "../connections/socket";
+import { socket } from "../connections/socket";
 import LaunchGame from "../gameLogic/launchGame";
 import VideoCall from "../connections/videoCall";
 
@@ -62,7 +62,9 @@ export default function MainPage() {
   return (
     <div>
       {opponentDisconnected ? (
-        <h1>Opponent Disconnected</h1>
+        <div>
+          <h1>Opponent Disconnected</h1>
+        </div>
       ) : bothJoined ? (
         <div className="mainDiv">
           <VideoCall className="mainDiv-Child" />

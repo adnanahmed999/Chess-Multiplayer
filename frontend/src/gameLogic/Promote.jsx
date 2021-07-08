@@ -2,6 +2,7 @@
 import React from 'react'
 import Square from './Square'
 import { move } from './Game'
+import { socket } from '../connections/socket'
 const promotionPieces = ['r', 'n', 'b', 'q']
 
 export default function Promote({
@@ -14,7 +15,10 @@ export default function Promote({
           <Square black={i % 3 === 0}>
             <div
               className="piece-container"
-              onClick={() => move(from, to, p)}
+              onClick={() => {
+                move(from, to, p)
+                socket.emit('promoteMove', {from, to, p})
+              } }
             >
               <img
                 src={(`/assets/${p}_${color}.png`)}

@@ -1,5 +1,6 @@
 import * as Chess from 'chess.js'
 import { BehaviorSubject } from 'rxjs'
+import { socket } from '../connections/socket'
 
 
 const chess = new Chess()
@@ -20,9 +21,9 @@ export function resetGame(whoReset) {
 }
 
 export function handleMove(from, to) {
-    console.log(chess.board())
+    // console.log(chess.board())
     const promotions = chess.moves({ verbose: true }).filter(m => m.promotion) // checking all possible moves, verbose true means we are converting it to array
-    console.table(promotions)
+    // console.table(promotions)
     if (promotions.some(p => `${p.from}:${p.to}` === `${from}:${to}`)) {
         const pendingPromotion = { from, to, color: promotions[0].color }
         updateGame(pendingPromotion)
@@ -57,13 +58,17 @@ export function handleMovePieces(positionObject) {
 
 function updateGame(pendingPromotion) {
     const isGameOver = chess.game_over()
+    // if(chess.in_check()) {
+    //     socket.emit('checked')
+    // }
 
     const newGame = {
         board: chess.board(),
         pendingPromotion,
         isGameOver,
         turn: chess.turn(),
-        result: isGameOver ? getGameResult() : null
+        result: isGameOver ? getGameResult() : null,
+        // isCheck: chess.in_check()
     }
 
     gameSubject.next(newGame)

@@ -3,10 +3,11 @@ const app = express()
 const http = require("http")
 const socketIo = require("socket.io")
 const server = http.createServer(app)
-const port = process.env.port || 3003
+const port = process.env.PORT || 3003
 const { v4: uuidv4 } = require('uuid');
 const io = socketIo(server, {cors:{origin:"*"}})
-
+const cors = require('cors');
+app.use(cors());
 
 const clientRooms = {}
 
@@ -21,6 +22,7 @@ io.on("connection", (client)=> {
     client.on('reStartNewGame', handleReStartNewGame)
     client.on('sendOtherPlayerClientID', handleSendClientID)
     client.on('disconnect', handleDisconnect)
+    client.on('promoteMove', handlePromoteMove);
 
     function handleNewGame() {
         let roomName = uuidv4();
@@ -87,6 +89,15 @@ io.on("connection", (client)=> {
         io.sockets.in(roomName).emit('opponentDisconnected')
     }
 
+    function handlePromoteMove(detailsObject) {
+        // const roomName = clientRooms[client.id]
+        client.broadcast.emit('validPromoteMove',detailsObject)
+    }
+
+})
+
+app.get("/", (req,res)=> {
+    res.send("Works")
 })
 
 server.listen(port, ()=> {

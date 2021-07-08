@@ -10,6 +10,7 @@ function CoreGame() {
   const [isGameOver, setIsGameOver] = useState()
   const [result, setResult] = useState()
   const [turn, setTurn] = useState()
+  // const [userChecked, setUserChecked] = useState()
  
   
   useEffect(() => {
