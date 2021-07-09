@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Peer from "simple-peer";
-import styled from "styled-components";
 import { socket, myID, otherPlayerID, playerNumber } from './socket';
 
 
@@ -31,13 +30,26 @@ function VideoCall() {
   }, []);
 
   function callPeer(id) {
-    setTimeout(()=> {
-        const peer = new Peer({
-          initiator: true,
-          trickle: false,
-          stream: stream,
-        });
-    
+      const peer = new Peer({
+        initiator: true,
+        trickle: false,
+        config: {
+  
+          iceServers: [
+              {
+                  urls: "stun:numb.viagenie.ca",
+                  username: "adnanahmed.indian@gmail.com",
+                  credential: "passNUMB@123"
+              },
+              {
+                  urls: "turn:numb.viagenie.ca",
+                  username: "adnanahmed.indian@gmail.com",
+                  credential: "passNUMB@123"
+              }
+          ]
+      },
+        stream: stream,
+      });
         peer.on("signal", data => {
           socket.emit("callUser", { userToCall: id, signalData: data, from: myID })
         })
@@ -52,7 +64,6 @@ function VideoCall() {
           setCallAccepted(true);
           peer.signal(signal);
         })
-    }, 1000)
   }
 
   function acceptCall() {

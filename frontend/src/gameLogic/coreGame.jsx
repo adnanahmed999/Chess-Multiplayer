@@ -33,7 +33,11 @@ function CoreGame() {
     socket.emit('reStartNewGame', {roomName, playerNumber })
   }
 
+  if(userChecked) {
+    alert('Check!!!')
+  }
 
+  console.log("turn", turn)
 
   return (
     <div className="container">
@@ -44,8 +48,12 @@ function CoreGame() {
           </h2>
         )}
         <div>
-          <button className="btn btn-success mb-4" onClick={handleReset}>Reset Game</button>
-          {userChecked && <h1>Check!!!</h1>}
+          <div className='make-center'>
+            <button className="btn btn-success mb-4" onClick={handleReset}>Reset Game</button>
+          </div>
+          <div>
+            {turn==='w'? <h1>White's Turn</h1> : <h1>Black's Turn </h1>}
+          </div>
         </div>
       </div>
       <div className="board-container">
