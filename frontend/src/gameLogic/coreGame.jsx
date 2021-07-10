@@ -27,15 +27,16 @@ function CoreGame() {
 
   useEffect(()=> {
     socket.on('resetGame', resetGame)
-  }, [])
+    if(userChecked) {
+      alert('Check!!!')
+    }
+  }, [userChecked])  
 
   function handleReset() {
     socket.emit('reStartNewGame', {roomName, playerNumber })
   }
 
-  if(userChecked) {
-    alert('Check!!!')
-  }
+
 
   console.log("turn", turn)
 
