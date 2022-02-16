@@ -1,6 +1,6 @@
 import io from 'socket.io-client'
 
-const ENDPOINT = "http://127.0.0.1:3003";
+const ENDPOINT = `${process.env.REACT_APP_BACKEND_URL}`;
 
 const socket = io(ENDPOINT);
 
